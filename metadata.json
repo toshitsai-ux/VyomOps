@@ -1,0 +1,6 @@
+{
+  "name": "VyomOps Command Center",
+  "description": "Integrated real-time hazard vectors, historical lookup timelines, and live orbital pass trackers for South Asia and surrounding region.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

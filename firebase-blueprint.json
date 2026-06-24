@@ -1,0 +1,68 @@
+{
+  "collections": {
+    "analyses": {
+      "id": "analyses",
+      "fields": {
+        "incidentName": "string",
+        "category": "string",
+        "deltaPercentage": "number",
+        "priority": "string",
+        "riskScore": "integer",
+        "createdAt": "timestamp",
+        "operatorName": "string",
+        "summary": "string",
+        "checklist": "array",
+        "suggestedCoordinates": "array",
+        "boundingBox": "string"
+      }
+    },
+    "operators": {
+      "id": "operators",
+      "fields": {
+        "uid": "string",
+        "displayName": "string",
+        "email": "string",
+        "createdAt": "timestamp",
+        "clearanceLevel": "string",
+        "assignedRegion": "string"
+      }
+    },
+    "health_checks": {
+      "id": "health_checks",
+      "fields": {
+        "timestamp": "timestamp"
+      }
+    },
+    "zones": {
+      "id": "zones",
+      "fields": {
+        "name": "string",
+        "lat": "number",
+        "lng": "number",
+        "threshold": "integer",
+        "interval": "integer",
+        "baseline_image_url": "string",
+        "last_check": "timestamp",
+        "status": "string",
+        "created_at": "timestamp",
+        "created_by": "string"
+      }
+    },
+    "alerts": {
+      "id": "alerts",
+      "fields": {
+        "zone_id": "string",
+        "zone_name": "string",
+        "type": "string",
+        "change_percentage": "number",
+        "risk_score": "integer",
+        "severity": "string",
+        "message": "string",
+        "created_at": "timestamp",
+        "status": "string",
+        "image_url": "string",
+        "checklist": "array"
+      }
+    }
+  }
+}

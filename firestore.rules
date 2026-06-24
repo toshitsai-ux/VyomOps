@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Operator profiles are readable by authenticated users and writeable by the matching UID owner
+    match /operators/{operatorId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == operatorId;
+    }
+
+    // Analyses logs are readable by authenticated operators and writeable or appendable by any verified operator
+    match /analyses/{analysisId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // Health Checks are public for diagnostics and system verification runs
+    match /health_checks/{checkId} {
+      allow read, write: if true;
+    }
+
+    // Public reports (crowd-sourced) are publicly readable and writeable
+    match /public_reports/{reportId} {
+      allow read, write: if true;
+    }
+
+    // Incidents (verified events) are publicly readable and writeable
+    match /incidents/{incidentId} {
+      allow read, write: if true;
+    }
+
+    // Flagged reports are publicly readable and writeable
+    match /flagged_reports/{flaggedId} {
+      allow read, write: if true;
+    }
+
+    // Zones are readable and writeable by authenticated operators
+    match /zones/{zoneId} {
+      allow read, write: if request.auth != null;
+      
+      // Nested subcollection images is also accessible
+      match /images/{imageId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // Alerts are readable and writeable by authenticated operators
+    match /alerts/{alertId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

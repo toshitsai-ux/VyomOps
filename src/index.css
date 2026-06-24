@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --animate-fadeOut: fadeOutLabel 2s ease-out forwards;
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-space-grotesk: "Space Grotesk", sans-serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+@keyframes fadeOutLabel {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(0.5rem) scale(0.95);
+  }
+}
+
+/* Custom background animations & cyber glow helper utility classes */
+.deep-space-bg {
+  background-color: #0A0A1A;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 107, 53, 0.04) 0%, transparent 40%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+}
+
+.ops-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.text-cyber-cyan {
+  color: #00E5FF;
+}
+
+.bg-cyber-cyan {
+  background-color: #00E5FF;
+}
+
+.border-cyber-cyan {
+  border-color: #00E5FF;
+}
+
+.text-cyber-orange {
+  color: #FF6B35;
+}
+
+.bg-cyber-orange {
+  background-color: #FF6B35;
+}
+
+.border-cyber-orange {
+  border-color: #FF6B35;
+}
+
+/* Custom pulsing marker styles for Leaflet */
+@keyframes marker-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.pulsing-marker-critical {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background-color: #FF3B30; /* Bright dynamic red */
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 12px #FF3B30;
+}
+
+.pulsing-marker-critical::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #FF3B30;
+  animation: marker-pulse 1.5s infinite ease-out;
+  pointer-events: none;
+}
+
+.marker-active-glow {
+  width: 18px;
+  height: 18px;
+  background-color: #FF9500; /* Active - Orange */
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 12px #FF9500;
+  display: inline-block;
+}
+
+.marker-cleared-green {
+  width: 18px;
+  height: 18px;
+  background-color: #34C759; /* Green cleared */
+  border-radius: 50%;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 10px #34C759;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Fix leaflet popup style to match dark space-age dashboard */
+.leaflet-popup-content-wrapper {
+  background: rgba(7, 7, 20, 0.9) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(0, 229, 255, 0.3) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 12px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(7, 7, 20, 0.9) !important;
+  border-left: 1px solid rgba(0, 229, 255, 0.3) !important;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.3) !important;
+}
+
+/* Ensure the map and Leaflet containers have a clean, tactical aesthetic and single layer flow */
+.map-container {
+  height: 100%;
+  width: 100%;
+  background: #0A0A1A;
+  position: relative;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #0A0A1A;
+  z-index: 1;
+}
+

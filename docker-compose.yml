@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  vyomops-terminal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vyomops-recon:latest
+    container_name: vyomops_tactical_terminal
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
