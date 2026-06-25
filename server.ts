@@ -720,6 +720,23 @@ const uploadBase64ToStorage = async (base64Data: string, destinationPath: string
   return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(destinationPath)}?alt=media`;
 };
 
+// Helper to validate URLs to prevent SSRF
+function isSafeExternalUrl(urlStr: string): boolean {
+  try {
+    const parsed = new URL(urlStr);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return false;
+
+    // Allow only trusted domains for external image fetches
+    const allowedDomains = [
+      "firebasestorage.googleapis.com",
+      "images.unsplash.com"
+    ];
+    return allowedDomains.includes(parsed.hostname);
+  } catch (e) {
+    return false;
+  }
+}
+
 // Lazy initialization of Gemini SDK
 let aiClient: GoogleGenAI | null = null;
 function getGeminiClient() {
@@ -776,7 +793,7 @@ async function runVerificationPipeline(reportId: string): Promise<any> {
         const tempLocalFile = path.join(os.tmpdir(), `${reportId}_0.jpg`);
         const firstUrl = report.image_urls[0];
         
-        if (firstUrl.startsWith("http")) {
+        if (firstUrl.startsWith("http") && isSafeExternalUrl(firstUrl)) {
           // Download file content to temp
           const fileRes = await fetch(firstUrl);
           const arrayBuffer = await fileRes.arrayBuffer();
@@ -839,7 +856,7 @@ async function runVerificationPipeline(reportId: string): Promise<any> {
       // Feed first image content directly into Gemini
       if (report.image_urls && report.image_urls.length > 0) {
         const firstUrl = report.image_urls[0];
-        if (firstUrl.startsWith("http")) {
+        if (firstUrl.startsWith("http") && isSafeExternalUrl(firstUrl)) {
           const fileRes = await fetch(firstUrl);
           const arrayBuffer = await fileRes.arrayBuffer();
           imageParts.push({
