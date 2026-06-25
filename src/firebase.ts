@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Read configuration values (with direct fallback based on firebase-applet-config.json for premium reliability)
 const firebaseConfig = {
-  apiKey: "AIzaSyAo6a8zwOVq69UknA_eTXvcv8Q2De-bH4k",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "quantum-park-43n78.firebaseapp.com",
   projectId: "quantum-park-43n78",
   storageBucket: "quantum-park-43n78.firebasestorage.app",
