@@ -821,15 +821,11 @@ async function runVerificationPipeline(reportId: string): Promise<any> {
     let isOldIncident = false;
     let oldIncidentSource = "";
     let geminiScore = 85;
-    let geminiReasoning = "Failsafe validation triggered. Visual contents validated against baseline templates.";
+    let geminiReasoning = "Awaiting AI Analysis...";
     let suggestions: any = {
       suggested_severity: "Active",
       risk_score: 5,
-      recommended_checklist: [
-        "Deploy rescue operators to evaluate perimeter flooding",
-        "Coordinate immediate relief dispatch with district HQ",
-        "Broadcast public warnings via localized cell relays"
-      ]
+      recommended_checklist: []
     };
 
     try {
@@ -918,17 +914,30 @@ Return a structured JSON with:
       });
 
       if (response.text) {
-        const parsed = JSON.parse(response.text);
-        relevanceScore = parsed.relevance_score ?? 85;
-        aiGeneratedScore = Math.max(aiScore, parsed.ai_generated_score ?? 10);
-        isOldIncident = parsed.is_old_incident ?? false;
-        oldIncidentSource = parsed.old_incident_source ?? "";
-        geminiScore = parsed.confidence_score ?? 85;
-        geminiReasoning = parsed.reasoning ?? geminiReasoning;
-        suggestions = parsed;
+        try {
+          // Sometimes AI wraps JSON in markdown code blocks, strip them out
+          const cleanedText = response.text.replace(/```json\n?|```/g, "").trim();
+          const parsed = JSON.parse(cleanedText);
+          relevanceScore = parsed.relevance_score ?? 85;
+          aiGeneratedScore = Math.max(aiScore, parsed.ai_generated_score ?? 10);
+          isOldIncident = parsed.is_old_incident ?? false;
+          oldIncidentSource = parsed.old_incident_source ?? "";
+          geminiScore = parsed.confidence_score ?? 85;
+          geminiReasoning = parsed.reasoning ?? "Successfully analyzed visual evidence.";
+          suggestions = parsed;
+        } catch (parseErr: any) {
+          console.error("Failed to parse Gemini JSON:", parseErr, "Response text:", response.text);
+          geminiReasoning = "AI analysis succeeded but returned invalid JSON format.";
+        }
       }
     } catch (gErr: any) {
       console.warn("[Express] Gemini API verification failed or was bypassed:", gErr?.message || gErr);
+      geminiReasoning = `AI Validation Failed: ${gErr?.message || "Unknown API Error"}`;
+      suggestions.recommended_checklist = [
+        "System Warning: AI verification model failed to respond.",
+        "Verify Gemini API credentials and network connectivity.",
+        "Fallback: Operator manual review required."
+      ];
     }
 
     const aiDetected = aiGeneratedScore >= 50;
