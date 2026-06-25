@@ -825,8 +825,9 @@ async def auth_test_endpoint(uid: str = Depends(get_current_user)):
 # IMPACT RADIUS & AFFECTED POPULATION ESTIMATOR UTILITIES & ENDPOINT
 # ==============================================================================
 
-def resolve_lat_lng_from_location(location_name: str):
-    import requests
+async def resolve_lat_lng_from_location(location_name: str):
+    import httpx
+    import urllib.parse
     query_lower = location_name.lower().strip()
     
     # Custom high-precision geocoding overrides for Indian test landmarks
@@ -848,9 +849,10 @@ def resolve_lat_lng_from_location(location_name: str):
         return 26.14, 91.73, "Assam, Brahmaputra Basin, India"
         
     try:
-        url = f"https://nominatim.openstreetmap.org/search?q={requests.utils.quote(location_name)}&format=json&limit=1"
+        url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(location_name)}&format=json&limit=1"
         headers = {"User-Agent": "VyomOps-Command-Center/1.0"}
-        res = requests.get(url, headers=headers, timeout=5)
+        async with httpx.AsyncClient() as client:
+            res = await client.get(url, headers=headers, timeout=5.0)
         if res.status_code == 200:
             data = res.json()
             if data:
@@ -936,9 +938,9 @@ def get_population_in_radius(lat: float, lng: float, radius_km: float) -> int:
     return fallback_pop
 
 
-def get_towns_in_radius(lat: float, lng: float, radius_km: float) -> list:
+async def get_towns_in_radius(lat: float, lng: float, radius_km: float) -> list:
     import math
-    import requests
+    import httpx
     
     towns = []
     
@@ -988,7 +990,8 @@ def get_towns_in_radius(lat: float, lng: float, radius_km: float) -> list:
     try:
         url = f"https://nominatim.openstreetmap.org/search?format=json&q=town&bounded=1&viewbox={min_lon},{min_lat},{max_lon},{max_lat}"
         headers = {"User-Agent": "VyomOps-Command-Center/1.0"}
-        res = requests.get(url, headers=headers, timeout=4)
+        async with httpx.AsyncClient() as client:
+            res = await client.get(url, headers=headers, timeout=4.0)
         if res.status_code == 200:
             data = res.json()
             if isinstance(data, list):
@@ -1053,7 +1056,7 @@ async def get_impact_estimator(
             if doc_ref.exists:
                 data = doc_ref.to_dict()
                 loc_name = data.get("location", "Uttarakhand")
-                resolved_lat, resolved_lng, _ = resolve_lat_lng_from_location(loc_name)
+                resolved_lat, resolved_lng, _ = await resolve_lat_lng_from_location(loc_name)
                 
                 # Derive disaster type from category or summary
                 cat = data.get("category", "").lower()
@@ -1082,7 +1085,7 @@ async def get_impact_estimator(
 
     radius_km = calculate_impact_radius(resolved_type, resolved_mag, metadata)
     affected_population = get_population_in_radius(resolved_lat, resolved_lng, radius_km)
-    towns = get_towns_in_radius(resolved_lat, resolved_lng, radius_km)
+    towns = await get_towns_in_radius(resolved_lat, resolved_lng, radius_km)
 
     return {
         "radius_km": round(radius_km, 1),
