@@ -3,6 +3,7 @@ import gc
 import json
 import uuid
 import asyncio
+import logging
 from typing import Optional, List
 from fastapi import FastAPI, Depends, HTTPException, Header, UploadFile, File, Form, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,6 +24,8 @@ except ImportError:
 
 # Initialize dotenv
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 # Initialize Firebase database dependency
 from firebase_init import db, bucket
@@ -877,15 +880,15 @@ def calculate_impact_radius(disaster_type: str, magnitude: Optional[float], meta
             try:
                 scale = float(metadata["river_size"])
                 base_radius *= scale
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to parse river_size from metadata: {e}")
         return base_radius
     elif "cyclone" in disaster_type_lower or "tc" in disaster_type_lower or "storm" in disaster_type_lower:
         if metadata and "storm_wind_radius" in metadata:
             try:
                 return float(metadata["storm_wind_radius"])
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to parse storm_wind_radius from metadata: {e}")
         return 30.0
     elif "landslide" in disaster_type_lower or "slope" in disaster_type_lower:
         base_radius = 5.0
@@ -893,8 +896,8 @@ def calculate_impact_radius(disaster_type: str, magnitude: Optional[float], meta
             try:
                 scale = float(metadata["slope_area"])
                 base_radius *= scale
-            except:
-                pass
+            except Exception as e:
+                logger.warning(f"Failed to parse slope_area from metadata: {e}")
         return base_radius
     else:
         return 20.0
