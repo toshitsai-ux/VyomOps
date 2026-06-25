@@ -877,7 +877,7 @@ Return a structured JSON with:
 - recommended_checklist: array of exactly 3 actionable civil defense instructions.`;
 
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-1.5-flash",
         contents: [
           ...imageParts,
           { text: promptText }
