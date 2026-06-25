@@ -198,6 +198,7 @@ export default function Register() {
                     />
                     <button
                       type="button"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
                     >
@@ -306,6 +307,8 @@ export default function Register() {
             <div className="text-zinc-400 text-xs leading-normal">{toast.message}</div>
           </div>
           <button 
+            type="button"
+            aria-label="Close notification"
             onClick={() => setToast(prev => ({ ...prev, visible: false }))} 
             className="text-zinc-500 hover:text-zinc-200 font-bold ml-2 shrink-0 cursor-pointer text-base leading-none"
           >
