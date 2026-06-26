@@ -67,14 +67,14 @@ const MapControls: React.FC = () => {
         border: "1px solid rgba(255,255,255,0.06)",
       }}
     >
-      <button onClick={() => map.zoomIn()} style={buttonStyle}>
+      <button onClick={() => map.zoomIn()} style={buttonStyle} aria-label="Zoom in" title="Zoom in">
         +
       </button>
-      <button onClick={() => map.zoomOut()} style={buttonStyle}>
+      <button onClick={() => map.zoomOut()} style={buttonStyle} aria-label="Zoom out" title="Zoom out">
         −
       </button>
       <div style={{ width: "1px", background: "rgba(255,255,255,0.08)" }} />
-      <button onClick={handleReset} style={{ ...buttonStyle, padding: "4px 12px", fontSize: "11px", width: "auto" }}>
+      <button onClick={handleReset} style={{ ...buttonStyle, padding: "4px 12px", fontSize: "11px", width: "auto" }} aria-label="Reset map view" title="Reset map view">
         ↺ Reset
       </button>
     </div>
