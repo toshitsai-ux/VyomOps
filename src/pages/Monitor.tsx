@@ -116,6 +116,7 @@ export default function Monitor() {
             NEW PUBLIC REPORT
           </Link>
           <button
+            aria-label="Refresh data"
             onClick={fetchData}
             disabled={refreshing}
             className="p-1.5 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-all text-zinc-400 disabled:opacity-40"
