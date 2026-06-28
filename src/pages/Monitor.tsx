@@ -12,6 +12,7 @@ export default function Monitor() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [operatorOverrideMsg, setOperatorOverrideMsg] = useState("");
+  const [loadingOverride, setLoadingOverride] = useState(false);
 
   // Operator selection for overriding Firestore status
   const [newStatus, setNewStatus] = useState("Active");
@@ -74,6 +75,7 @@ export default function Monitor() {
   const handleOperatorOverride = async () => {
     if (!selectedIncident) return;
     setOperatorOverrideMsg("SUBMITTING COMMAND OVERRIDE...");
+    setLoadingOverride(true);
     try {
       const res = await fetch(`/api/incidents/${selectedIncident.id}/status`, {
         method: "PATCH",
@@ -94,6 +96,8 @@ export default function Monitor() {
     } catch (err: any) {
       console.error(err);
       setOperatorOverrideMsg("CONNECTION ERROR SECURE.");
+    } finally {
+      setLoadingOverride(false);
     }
   };
 
@@ -335,9 +339,17 @@ export default function Monitor() {
 
                     <button
                       onClick={handleOperatorOverride}
-                      className="w-full py-2 bg-cyber-cyan hover:bg-cyan-400 text-black font-orbitron font-extrabold tracking-wider rounded text-[10px] transition-all"
+                      disabled={loadingOverride}
+                      className="w-full py-2 bg-cyber-cyan hover:bg-cyan-400 text-black font-orbitron font-extrabold tracking-wider rounded text-[10px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
-                      COMMIT DIRECT OVERRIDE
+                      {loadingOverride ? (
+                        <>
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          <span>PROCESSING...</span>
+                        </>
+                      ) : (
+                        <span>COMMIT DIRECT OVERRIDE</span>
+                      )}
                     </button>
 
                     {operatorOverrideMsg && (
