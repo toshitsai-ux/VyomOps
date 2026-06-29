@@ -1,0 +1,3 @@
+## 2024-11-23 - Missing `aria-label` on icon-only buttons
+**Learning:** Found an accessibility issue pattern specific to this app's components where several utility buttons (like the refresh button in the Monitor, or toast close and password visibility toggles in auth forms) rely only on icons (`lucide-react`) without providing `aria-label` attributes. This breaks the experience for screen reader users as they receive no context on the button's action.
+**Action:** Always ensure that any `<button>` element containing only an icon (or icons) includes a descriptive `aria-label` attribute indicating its purpose or current state (e.g., dynamically updating the label between "Show password" and "Hide password").
