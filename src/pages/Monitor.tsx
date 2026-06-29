@@ -118,6 +118,7 @@ export default function Monitor() {
           <button
             onClick={fetchData}
             disabled={refreshing}
+            aria-label="Refresh data"
             className="p-1.5 rounded bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 transition-all text-zinc-400 disabled:opacity-40"
           >
             <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-cyber-cyan" : ""}`} />
