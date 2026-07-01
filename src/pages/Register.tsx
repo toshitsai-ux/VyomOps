@@ -199,7 +199,8 @@ export default function Register() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                      aria-label="Toggle password visibility"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors cursor-pointer rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -307,7 +308,8 @@ export default function Register() {
           </div>
           <button 
             onClick={() => setToast(prev => ({ ...prev, visible: false }))} 
-            className="text-zinc-500 hover:text-zinc-200 font-bold ml-2 shrink-0 cursor-pointer text-base leading-none"
+            aria-label="Close notification"
+            className="text-zinc-500 hover:text-zinc-200 font-bold ml-2 shrink-0 cursor-pointer text-base leading-none rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
           >
             &times;
           </button>
