@@ -198,8 +198,9 @@ export default function Register() {
                     />
                     <button
                       type="button"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -306,8 +307,9 @@ export default function Register() {
             <div className="text-zinc-400 text-xs leading-normal">{toast.message}</div>
           </div>
           <button 
+            aria-label="Close notification"
             onClick={() => setToast(prev => ({ ...prev, visible: false }))} 
-            className="text-zinc-500 hover:text-zinc-200 font-bold ml-2 shrink-0 cursor-pointer text-base leading-none"
+            className="text-zinc-500 hover:text-zinc-200 font-bold ml-2 shrink-0 cursor-pointer text-base leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded-sm p-1"
           >
             &times;
           </button>
