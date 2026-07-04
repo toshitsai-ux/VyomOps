@@ -883,7 +883,9 @@ export default function Dashboard() {
         <div className="flex bg-zinc-950 border-b border-zinc-900 p-2 gap-2 shrink-0 z-20">
           <button
             onClick={() => setMobileActiveView("map")}
-            className={`flex-1 py-2.5 text-center text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all min-h-[44px] flex items-center justify-center border ${
+            aria-label="Switch to Tactical Map view"
+            title="Switch to Tactical Map view"
+            className={`flex-1 py-2.5 text-center text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all min-h-[44px] flex items-center justify-center border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
               mobileActiveView === "map"
                 ? "bg-cyan-500/10 border-cyan-500/30 text-[#00E5FF] font-black"
                 : "bg-transparent border-transparent text-zinc-500 hover:text-zinc-300"
@@ -894,7 +896,9 @@ export default function Dashboard() {
           </button>
           <button
             onClick={() => setMobileActiveView("feed")}
-            className={`flex-1 py-2.5 text-center text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all min-h-[44px] flex items-center justify-center border ${
+            aria-label="Switch to Operations Feed view"
+            title="Switch to Operations Feed view"
+            className={`flex-1 py-2.5 text-center text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all min-h-[44px] flex items-center justify-center border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
               mobileActiveView === "feed"
                 ? "bg-cyan-500/10 border-cyan-500/30 text-[#00E5FF] font-black"
                 : "bg-transparent border-transparent text-zinc-500 hover:text-zinc-300"
