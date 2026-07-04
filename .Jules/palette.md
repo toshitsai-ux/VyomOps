@@ -1,0 +1,3 @@
+## 2024-07-04 - Focus States and Icon Buttons
+**Learning:** This app heavily uses custom-styled, icon-only utility buttons (`RefreshCw`, password visibility toggles, view switchers) that inherently lack screen reader descriptions and clear keyboard focus states because they are absolute positioned or custom rounded. Applying `focus-visible:ring-2` directly often requires also adding slight padding (`p-1` or `p-0.5`) to prevent the focus ring from clipping or looking cramped against the icon edges.
+**Action:** Always check icon-only utility buttons in new components for `aria-label`, `title`, and ensure `focus-visible:ring-2` is accompanied by adequate padding and `outline-none` to override default browser focus behaviors gracefully.
